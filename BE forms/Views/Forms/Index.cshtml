@@ -1,0 +1,68 @@
+﻿@model List<SubmitForm>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<button class="btn-primary col-md-1" style="float:right;" data-bs-toggle="modal" data-bs-target="#my" id="pop">
+    Add New
+</button>
+
+
+<div class="col-12">
+    <table class=" table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    S.no
+                </th>
+                <th>
+                    FullName
+                </th>
+                <th>
+                    Gender
+                </th>
+                <th>
+                    Country
+                </th>
+                <th>
+                    State
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    Edit
+                </th>
+                <th>
+                    Delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Model)
+            {
+                <tr>
+                    <td>@record.Id</td>
+                    <td>@record.FirstName</td>
+                    <td>@record.Gender</td>
+                    <td>@record.CountryID</td>
+                    <td>@record.StateID</td>
+                    <td>@record.CityID</td>
+                    <td id="btn1">
+                        <button class="btn btn-info">
+                            Edit
+                        </button>
+
+                    </td>
+                    <td id="btn2">
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+            
+               
+            
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,192 @@
+﻿@using BE_forms.Models.Registrationforms
+@model AddNewForm
+
+
+    @* For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+ *@
+@{
+}
+
+
+    <button class="btn-primary col-md-1" style="float:right;" data-bs-toggle="modal" data-bs-target="#my" id="pop">
+        Add New
+    </button>
+
+
+<div class="col-12">
+    <table class=" table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    S.no
+                </th>
+                <th>
+                    FullName
+                </th>
+                <th>
+                    Gender
+                </th>
+                <th>
+                    Country
+                </th>
+                <th>
+                    State
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    Edit
+                </th>
+                <th>
+                    Delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                   
+                </td>
+                <td>
+                   
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                  
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                    
+                </td>
+                <td id="btn1">
+                    <button class="btn btn-info">
+                        Edit
+                    </button>
+                    
+                </td>
+                <td id="btn2">
+                    <button class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="my" tabindex="-1" arial-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="@Url.Action("table", "Forms")">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label asp-for="FirstName">FirstName</label>
+                        <input asp-for="FirstName" type="text" class="form-control" required="required" name="Firstname" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName">LastName</label>
+                        <input asp-for="LastName" type="text" class="form-control" required="required" name="Lastname" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email">Email</label>
+                        <input asp-for="Email" type="email" class="form-control" required="required" name="Email" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Phone">Phone</label>
+                        <input asp-for="Phone" type="text" class="form-control" required="required" name="phone" />
+                    </div>
+                    <div class="form-group d-flex">
+                        <label asp-for="Gender">Gender: </label>
+                        @foreach (var opt in Model.Genders)
+                        {
+                            <div class="form-check m-1">
+                                <input class="form-check-input" type="radio" id="@opt.Id" name="Gender" value="@opt.Genders" checked="@(Model.Gender == opt.Id)" />
+                                <label class="form-check-label" asp-for="@opt.Id"> @opt.Genders</label>
+                            </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Country">Country</label>
+                        <select asp-for="CountryID" id="cnty1" asp-items="new SelectList(Model.Country, nameof(Country.ID), nameof(Country.Countries))" class="form-select" required="required" name="Country">
+                            <option value="">Select Country</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="State">State</label>
+                        <select asp-for="StateID" id="st1" asp-items="new SelectList(Model.State, nameof(State.Id),nameof(State.States))" class="form-select" required="required" name="State">
+                            <option value="">Select State</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="city">City</label>
+                        <select asp-for="CityID" id="ct1" asp-items="new SelectList(Model.city, nameof(City.Id), nameof(City.Cities))" class="form-select" required="required" name="City">
+                            <option value="">Select City</option>
+                        </select>
+                    </div>
+                    @*  <div class="form-group">
+                    <label asp-for="LanguageID">Language</label>
+                    @foreach(var lan in Model.language)
+                    {
+                    <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="lan@lan.Id" name="LanguageID" value="@lan.Id" @(Model.LanguageID.Contains(lan.Id) ? "checked" : "")/>
+                    <label class="form-check-label" for="lan@(lan.Id)">@lan.Languages </label>
+                    </div>
+                    }
+
+                    </div>
+                    *@
+                </div>
+                <div class="modal-footer">
+                    <button type="Submit" class="btn btn-info" style="margin-right:200px;">Save</button>
+                    <button type="button" class="btn btn-info" style="margin-right:100px" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+
+<script type="text/javascript">
+    // document.getElementById("pop").addEventListener("click", function () {
+    //     window.location.href = '/Forms/NewForm';
+  //  });
+    $(document).ready(function () {
+
+        $('#cnty1').change(function () {
+        var selectedCountryId = $(this).val();
+        $.get("/Forms/GetStates", { countryId: selectedCountryId }, function (data) {
+            $("#st1").empty();
+            $("#st1").append('<option value=""> select state</option>')
+            $("#ct1").empty();
+            $("#ct1").append('<option value=""> select City</option>')
+            $.each(data, function (index, state) {
+                //   console.log(state);
+                $('#st1').append('<option value="' + state.id + '">' + state.states + '</option>');
+            });
+        });
+    });
+
+    $('#st1').change(function () {
+        var selectedCountryId = $(this).val();
+        $.get("/Forms/GetCities", { stateId: selectedCountryId }, function (data) {
+            $("#ct1").empty();
+            $("#ct1").append('<option value=""> Select City</option>')
+            $.each(data, function (index, city) {
+                //   console.log(city);
+                $('#ct1').append('<option value="' + city.id + '">' + city.cities + '</option>');
+            });
+        });
+    });
+
+
+
+   });
+</script>
